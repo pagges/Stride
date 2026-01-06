@@ -51,30 +51,19 @@ print_info() {
 # 显示帮助信息
 show_help() {
     cat << EOF
-Stride - AI 开发工作流系统 v1.0.0
+Stride - AI 开发工作流系统初始化工具 v1.0.0
 
-用法: ./ai-workflow.sh <command> [options]
+用法: ./ai-workflow.sh [init|help]
 
 命令:
-  init                初始化工作流系统到当前项目
-  create <name>       创建新的工作流
-  workflow            工作流管理（创建/进入/查看状态）
-  dev <task-id>       开发指定任务
-  doc-review [file]   审查文档
-  code-review         代码审查
-  bug <title>         提交 Bug
-  fix <bug-id>        修复 Bug
-  test                执行测试
-  help                显示此帮助信息
+  init   初始化工作流系统到当前项目（默认）
+  help   显示此帮助信息
 
 示例:
-  ./ai-workflow.sh init                    # 初始化到项目
-  ./ai-workflow.sh create user-auth        # 创建工作流
-  ./ai-workflow.sh workflow                # 查看工作流状态
-  ./ai-workflow.sh dev TASK-001            # 开发任务
-  ./ai-workflow.sh bug "密码未加密"         # 提交 Bug
+  ./ai-workflow.sh init       # 初始化到项目
+  ./ai-workflow.sh            # 默认运行 init
 
-更多信息请访问: https://github.com/your-repo/stride
+更多信息请访问: https://github.com/pagges/Stride
 EOF
 }
 
@@ -83,50 +72,12 @@ source "$SCRIPT_DIR/scripts/utils.sh"
 
 # 主命令分发
 main() {
-    if [ $# -eq 0 ]; then
-        show_help
-        exit 0
-    fi
-
-    local command="$1"
-    shift
+    local command="${1:-init}"
 
     case "$command" in
-        init)
+        init|"")
             source "$SCRIPT_DIR/scripts/init.sh"
-            init_workflow "$@"
-            ;;
-        create)
-            source "$SCRIPT_DIR/scripts/create-workflow.sh"
-            create_workflow "$@"
-            ;;
-        workflow)
-            source "$SCRIPT_DIR/scripts/workflow.sh"
-            workflow_command "$@"
-            ;;
-        dev)
-            source "$SCRIPT_DIR/scripts/dev.sh"
-            dev_command "$@"
-            ;;
-        doc-review)
-            source "$SCRIPT_DIR/scripts/doc-review.sh"
-            doc_review_command "$@"
-            ;;
-        code-review)
-            source "$SCRIPT_DIR/scripts/code-review.sh"
-            code_review_command "$@"
-            ;;
-        bug)
-            source "$SCRIPT_DIR/scripts/bug.sh"
-            bug_command "$@"
-            ;;
-        fix)
-            source "$SCRIPT_DIR/scripts/fix.sh"
-            fix_command "$@"
-            ;;
-        test)
-            source "$SCRIPT_DIR/scripts/test.sh"
-            test_command "$@"
+            init_workflow
             ;;
         help|--help|-h)
             show_help

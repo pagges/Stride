@@ -11,7 +11,7 @@
 **在 `setup-workflow.sh` 中：**
 ```bash
 # 第 76 行（左右）
-local repo_url="${1:-https://github.com/your-org/ai-workflow-system.git}"
+local repo_url="${1:-https://github.com/pagges/ai-workflow-system.git}"
                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                                           改为你的仓库地址
 ```
@@ -19,7 +19,7 @@ local repo_url="${1:-https://github.com/your-org/ai-workflow-system.git}"
 **在 `install.sh` 中：**
 ```bash
 # 第 54 行（左右）
-local base_url="${1:-https://github.com/your-org/ai-workflow-system/raw/main}"
+local base_url="${1:-https://github.com/pagges/ai-workflow-system/raw/main}"
                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                           改为你的仓库地址
 ```
@@ -27,7 +27,7 @@ local base_url="${1:-https://github.com/your-org/ai-workflow-system/raw/main}"
 **在 `README-SHELL.md` 中：**
 ```bash
 # 第 10 行（左右）
-git clone https://your-repo/ai-workflow-system.git
+git clone https://github.com/pagges/Stride/ai-workflow-system.git
                  ^^^^^^^^^^^^
                  改为你的仓库地址
 ```
@@ -96,14 +96,14 @@ https://github.com/<username>/<repo>/raw/<branch>/<file-path>
 
 例如：
 ```
-https://github.com/your-org/ai-workflow-system/raw/main/install.sh
+https://github.com/pagges/ai-workflow-system/raw/main/install.sh
 ```
 
 ### 3. 更新脚本中的地址
 
 ```bash
 # 在脚本中将
-https://github.com/your-org/ai-workflow-system/raw/main
+https://github.com/pagges/ai-workflow-system/raw/main
 
 # 替换为你的实际地址
 https://github.com/your-username/ai-workflow-system/raw/main
@@ -142,7 +142,7 @@ curl -sSL https://github.com/your-username/ai-workflow-system/raw/main/install.s
 ### 1. 创建仓库
 
 ```bash
-git remote add origin https://gitlab.com/your-org/ai-workflow-system.git
+git remote add origin https://gitlab.com/pagges/ai-workflow-system.git
 git branch -M main
 git push -u origin main
 ```
@@ -156,20 +156,20 @@ https://gitlab.com/<group>/<project>/-/raw/<branch>/<file-path>
 
 例如：
 ```
-https://gitlab.com/your-org/ai-workflow-system/-/raw/main/install.sh
+https://gitlab.com/pagges/ai-workflow-system/-/raw/main/install.sh
 ```
 
 ### 3. 更新脚本
 
 ```bash
 # 在 install.sh 中改为
-local base_url="${1:-https://gitlab.com/your-org/ai-workflow-system/-/raw/main}"
+local base_url="${1:-https://gitlab.com/pagges/ai-workflow-system/-/raw/main}"
 ```
 
 ### 4. 分享命令
 
 ```bash
-curl -sSL https://gitlab.com/your-org/ai-workflow-system/-/raw/main/install.sh | bash
+curl -sSL https://gitlab.com/pagges/ai-workflow-system/-/raw/main/install.sh | bash
 ```
 
 ---
@@ -179,7 +179,7 @@ curl -sSL https://gitlab.com/your-org/ai-workflow-system/-/raw/main/install.sh |
 ### 1. 创建仓库
 
 ```bash
-git remote add origin https://gitee.com/your-org/ai-workflow-system.git
+git remote add origin https://gitee.com/pagges/ai-workflow-system.git
 git push -u origin main
 ```
 
@@ -192,20 +192,20 @@ https://gitee.com/<user>/<repo>/raw/<branch>/<file-path>
 
 例如：
 ```
-https://gitee.com/your-org/ai-workflow-system/raw/main/install.sh
+https://gitee.com/pagges/ai-workflow-system/raw/main/install.sh
 ```
 
 ### 3. 更新脚本
 
 ```bash
 # 在 install.sh 中改为
-local base_url="${1:-https://gitee.com/your-org/ai-workflow-system/raw/main}"
+local base_url="${1:-https://gitee.com/pagges/ai-workflow-system/raw/main}"
 ```
 
 ### 4. 分享命令
 
 ```bash
-curl -sSL https://gitee.com/your-org/ai-workflow-system/raw/main/install.sh | bash
+curl -sSL https://gitee.com/pagges/ai-workflow-system/raw/main/install.sh | bash
 ```
 
 ---
@@ -251,7 +251,7 @@ git push origin main
 # 2. 通知团队重新运行安装命令
 bash setup-workflow.sh
 # 或
-curl -sSL https://github.com/your-org/ai-workflow-system/raw/main/install.sh | bash
+curl -sSL https://github.com/pagges/ai-workflow-system/raw/main/install.sh | bash
 ```
 
 ---
@@ -284,7 +284,7 @@ git init
 bash /path/to/setup-workflow.sh
 
 # 测试远程安装
-curl -sSL https://your-repo/install.sh | bash
+curl -sSL https://github.com/pagges/Stride/install.sh | bash
 ```
 
 ### 测试检查清单
@@ -306,7 +306,7 @@ curl -sSL https://your-repo/install.sh | bash
 
 ```bash
 # 1. 先下载查看
-curl -sSL https://your-repo/install.sh > /tmp/install.sh
+curl -sSL https://github.com/pagges/Stride/install.sh > /tmp/install.sh
 
 # 2. 审查内容
 cat /tmp/install.sh
@@ -338,8 +338,8 @@ git push origin v1.0.0
 ## 💬 反馈和支持
 
 - 📧 Email: your-email@company.com
-- 🐛 Issue: https://github.com/your-org/ai-workflow-system/issues
-- 📖 Wiki: https://github.com/your-org/ai-workflow-system/wiki
+- 🐛 Issue: https://github.com/pagges/ai-workflow-system/issues
+- 📖 Wiki: https://github.com/pagges/ai-workflow-system/wiki
 
 ---
 

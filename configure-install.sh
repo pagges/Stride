@@ -72,27 +72,27 @@ configure_scripts() {
     fi
 
     print_info "更新 setup-workflow.sh..."
-    sed -i.bak "s|https://github.com/your-org/ai-workflow-system.git|${REPO_URL}|g" setup-workflow.sh
+    sed -i.bak "s|https://github.com/pagges/ai-workflow-system.git|${REPO_URL}|g" setup-workflow.sh
     rm -f setup-workflow.sh.bak
     print_success "setup-workflow.sh 已更新"
 
     if [ -f "install.sh" ]; then
         print_info "更新 install.sh..."
-        sed -i.bak "s|https://github.com/your-org/ai-workflow-system/raw/main|${RAW_URL}|g" install.sh
+        sed -i.bak "s|https://github.com/pagges/ai-workflow-system/raw/main|${RAW_URL}|g" install.sh
         rm -f install.sh.bak
         print_success "install.sh 已更新"
     fi
 
     if [ -f "ai-workflow.sh" ]; then
         print_info "更新 ai-workflow.sh..."
-        sed -i.bak "s|https://github.com/your-org/ai-workflow-system|${REPO_URL//.git/}|g" ai-workflow.sh
+        sed -i.bak "s|https://github.com/pagges/ai-workflow-system|${REPO_URL//.git/}|g" ai-workflow.sh
         rm -f ai-workflow.sh.bak
         print_success "ai-workflow.sh 已更新"
     fi
 
     if [ -f "README-SHELL.md" ]; then
         print_info "更新 README-SHELL.md..."
-        sed -i.bak "s|https://your-repo/ai-workflow-system.git|${REPO_URL}|g" README-SHELL.md
+        sed -i.bak "s|https://github.com/pagges/Stride/ai-workflow-system.git|${REPO_URL}|g" README-SHELL.md
         rm -f README-SHELL.md.bak
         print_success "README-SHELL.md 已更新"
     fi

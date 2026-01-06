@@ -283,7 +283,7 @@ chmod +x ai-workflow-system/scripts/*.sh
 git push origin main
 
 # 团队成员克隆项目
-git clone https://github.com/your-org/project.git
+git clone https://github.com/pagges/project.git
 cd project
 
 # 然后运行安装（如果还没装的话）
@@ -304,7 +304,7 @@ curl -sSL https://github.com/your-or./Stride/ai-workflow-system/raw/main/install
 
 ## 🔗 相关链接
 
-- 🌐 **GitHub 仓库**：https://github.com/your-org/ai-workflow-system
+- 🌐 **GitHub 仓库**：https://github.com/pagges/ai-workflow-system
 - 📧 **反馈邮箱**：team@company.com
 - 💬 **讨论区**：https://github.com/your-or./Stride/ai-workflow-system/discussions
 - 🐛 **报告问题**：https://github.com/your-or./Stride/ai-workflow-system/issues

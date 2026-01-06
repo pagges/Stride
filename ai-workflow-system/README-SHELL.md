@@ -7,7 +7,7 @@
 ### 1. 克隆或下载本项目
 
 ```bash
-git clone https://your-repo/ai-workflow-system.git
+git clone https://github.com/pagges/Stride/ai-workflow-system.git
 # 或直接下载并解压
 ```
 

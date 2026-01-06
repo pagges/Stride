@@ -51,7 +51,7 @@ wget -qO- https://github.com/your-or./Stride/ai-workflow-system/raw/main/install
 
 ```bash
 # 1. 克隆工作流系统
-git clone https://github.com/your-org/ai-workflow-system.git
+git clone https://github.com/pagges/ai-workflow-system.git
 
 # 2. 进入你的项目
 cd your-project
@@ -138,7 +138,7 @@ curl -sSL https://github.com/your-or./Stride/ai-workflow-system/raw/main/install
 
 或分享这个链接：
 ```
-https://github.com/your-org/ai-workflow-system#快速开始
+https://github.com/pagges/ai-workflow-system#快速开始
 ```
 
 ---
@@ -189,7 +189,7 @@ A: 使用本地安装方式：
 
 ```bash
 # 1. 手动下载或克隆工作流系统
-git clone https://github.com/your-org/ai-workflow-system.git
+git clone https://github.com/pagges/ai-workflow-system.git
 
 # 2. 在项目目录初始化
 cd your-project
@@ -212,7 +212,7 @@ A: 可以，但注意：
 ## 📚 更多信息
 
 - 📖 详细文档：[README-SHELL.md](./Stride/ai-workflow-system/README-SHELL.md)
-- 🔗 GitHub 仓库：https://github.com/your-org/ai-workflow-system
+- 🔗 GitHub 仓库：https://github.com/pagges/ai-workflow-system
 - 💬 问题反馈：https://github.com/your-or./Stride/ai-workflow-system/issues
 
 ---

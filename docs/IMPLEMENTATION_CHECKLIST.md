@@ -85,7 +85,7 @@
 - [ ] **更新 `setup-workflow.sh`**
   ```bash
   # 找到这一行（约第 76 行）：
-  local repo_url="${1:-https://github.com/your-org/ai-workflow-system.git}"
+  local repo_url="${1:-https://github.com/pagges/ai-workflow-system.git}"
 
   # 改为你的实际地址：
   local repo_url="${1:-https://github.com/YOUR-USERNAME/ai-workflow-system.git}"
@@ -94,7 +94,7 @@
 - [ ] **更新 `install.sh`**
   ```bash
   # 找到这一行（约第 54 行）：
-  local base_url="${1:-https://github.com/your-org/ai-workflow-system/raw/main}"
+  local base_url="${1:-https://github.com/pagges/ai-workflow-system/raw/main}"
 
   # 改为你的实际地址：
   local base_url="${1:-https://github.com/YOUR-USERNAME/ai-workflow-system/raw/main}"
