@@ -59,6 +59,7 @@ download_file() {
 # 下载并执行本地设置脚本
 download_setup_script() {
     local base_url="${1:-https://github.com/pagges/Stride/raw/main}"
+    local ai_tool="${2:-claude}"
     local setup_url="${base_url}/setup-workflow.sh"
 
     print_info "从 $setup_url 下载设置脚本..."
@@ -66,7 +67,7 @@ download_setup_script() {
     if download_file "$setup_url" "/tmp/setup-workflow.sh"; then
         print_success "设置脚本已下载"
         chmod +x /tmp/setup-workflow.sh
-        /tmp/setup-workflow.sh --repo "${base_url/\/raw\/main/}.git"
+        /tmp/setup-workflow.sh --repo "${base_url/\/raw\/main/}.git" --ai "$ai_tool"
         rm -f /tmp/setup-workflow.sh
     else
         print_error "下载失败，请检查网络连接"
@@ -94,7 +95,7 @@ main() {
     check_dependencies
     echo ""
 
-    download_setup_script "$base_url"
+    download_setup_script "$base_url" "claude"
 }
 
 main "$@"

@@ -13,6 +13,11 @@ if [ "$EUID" -eq 0 ] || [ -n "$SUDO_USER" ]; then
     echo "建议直接运行（不使用 sudo）："
     echo "  $0 $*"
     echo ""
+    # 在非交互模式下（STDIN 不是 TTY）自动取消
+    if [ ! -t 0 ]; then
+        echo "自动取消（非交互模式）"
+        exit 1
+    fi
     read -p "是否继续使用 sudo 运行? [y/N] " -n 1 -r
     echo
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
@@ -73,11 +78,12 @@ source "$SCRIPT_DIR/scripts/utils.sh"
 # 主命令分发
 main() {
     local command="${1:-init}"
+    shift || true  # 移除第一个参数，以便传递剩余的参数
 
     case "$command" in
         init|"")
             source "$SCRIPT_DIR/scripts/init.sh"
-            init_workflow
+            init_workflow "$@"  # 传递剩余的参数
             ;;
         help|--help|-h)
             show_help

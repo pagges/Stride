@@ -3,13 +3,20 @@
 # 初始化工作流系统到项目
 
 init_workflow() {
+    local ai_tool="${1:-auto}"
+
     print_info "正在初始化 AI 工作流指令系统..."
     echo ""
 
-    # 让用户选择 AI 工具
+    # 让用户选择 AI 工具（或使用指定的）
     print_info "选择 AI 编码工具..."
     echo ""
-    select_ai_tool_manually
+
+    if [ "$ai_tool" = "auto" ]; then
+        select_ai_tool_manually
+    else
+        select_ai_tool "$ai_tool"
+    fi
 
     echo ""
     print_success "✨ 初始化完成！"
@@ -55,6 +62,34 @@ init_cursor() {
     # Cursor 可能使用不同的配置方式
     print_warning "Cursor 配置方式待实现"
     print_info "请手动配置或使用通用的 shell 脚本"
+}
+
+# 非交互模式：直接选择 AI 工具
+select_ai_tool() {
+    local choice="$1"
+
+    echo ""
+    case "$choice" in
+        claude|1)
+            print_info "正在配置 Claude Code..."
+            mkdir -p .claude
+            init_claude_code
+            ;;
+        qoder|2)
+            print_info "正在配置 Qoder..."
+            mkdir -p .qoder
+            init_qoder
+            ;;
+        cursor|3)
+            print_info "正在配置 Cursor..."
+            mkdir -p .cursor
+            init_cursor
+            ;;
+        *)
+            print_info "仅使用 shell 脚本模式"
+            print_warning "你需要手动执行工作流命令（如: ai-workflow.sh workflow）"
+            ;;
+    esac
 }
 
 # 手动选择 AI 工具

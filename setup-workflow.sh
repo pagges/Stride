@@ -119,6 +119,8 @@ setup_workflow_system() {
 
 # 初始化工作流系统
 initialize_workflow() {
+    local ai_tool="${1:-claude}"
+
     print_header "初始化工作流系统"
 
     if [ ! -f "ai-workflow-system/ai-workflow.sh" ]; then
@@ -129,7 +131,7 @@ initialize_workflow() {
     print_info "运行初始化命令..."
     echo ""
 
-    ./ai-workflow-system/ai-workflow.sh init
+    ./ai-workflow-system/ai-workflow.sh init "$ai_tool"
 }
 
 # 显示成功信息
@@ -170,6 +172,10 @@ parse_arguments() {
                 REPO_URL="$2"
                 shift 2
                 ;;
+            --ai)
+                AI_TOOL="$2"
+                shift 2
+                ;;
             --help|-h)
                 show_help
                 exit 0
@@ -206,8 +212,13 @@ EOF
 # 主函数
 main() {
     local repo_url="https://github.com/pagges/Stride.git"
+    local ai_tool="claude"  # 默认 AI 工具
 
     parse_arguments "$@"
+
+    # 使用解析的值（如果有的话）
+    repo_url="${REPO_URL:-$repo_url}"
+    ai_tool="${AI_TOOL:-$ai_tool}"
 
     print_header "🚀 AI 工作流系统安装程序"
 
@@ -222,7 +233,7 @@ main() {
     setup_workflow_system "${repo_url}"
     echo ""
 
-    initialize_workflow
+    initialize_workflow "$ai_tool"
     echo ""
 
     show_success_message

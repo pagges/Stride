@@ -2,43 +2,27 @@
 
 > 一行命令快速安装，零配置开箱即用
 
-## 🚀 快速安装（3 种方式）
+## 🚀 快速安装（一行命令）
 
-### 方式 1：本地安装（推荐）
+### ⚡ 快速初始化（推荐）
 
-如果你已经有项目目录，直接运行：
-
-```bash
-cd your-project
-bash setup-workflow.sh
-```
-
-**需要的前置条件：**
-- ✅ 已安装 Git
-- ✅ 已安装 Bash
-- ✅ 有网络连接（用于克隆仓库）
-
----
-
-### 方式 2：远程一行安装（推荐给团队）
-
-在你的项目根目录，运行一行命令：
+在你的项目根目录，运行一行命令完成全部初始化：
 
 ```bash
-curl -sSL https://github.com/your-or./Stride/ai-workflow-system/raw/main/install.sh | bash
+curl -sSL https://github.com/pagges/Stride/raw/main/install.sh | bash
 ```
 
 或使用 wget：
 
 ```bash
-wget -qO- https://github.com/your-or./Stride/ai-workflow-system/raw/main/install.sh | bash
+wget -qO- https://github.com/pagges/Stride/raw/main/install.sh | bash
 ```
 
 **优点：**
-- 💨 超快速：一行命令完成全部安装
+- 💨 超快速：一行命令完成全部安装和初始化
 - 📦 零依赖：无需下载任何文件
 - 🔄 自动更新：每次安装都是最新版本
-- 👥 完美分享：只需分享这一个链接给团队
+- 👥 完美分享：只需分享这一个命令给团队
 
 **需要的前置条件：**
 - ✅ 已安装 Git
@@ -47,17 +31,28 @@ wget -qO- https://github.com/your-or./Stride/ai-workflow-system/raw/main/install
 
 ---
 
-### 方式 3：手动安装
+### 备选方案 1：本地安装
+
+如果你已经有项目目录，可以使用本地脚本：
+
+```bash
+cd your-project
+bash setup-workflow.sh
+```
+
+---
+
+### 备选方案 2：手动安装
 
 ```bash
 # 1. 克隆工作流系统
-git clone https://github.com/pagges/ai-workflow-system.git
+git clone https://github.com/pagges/Stride.git
 
 # 2. 进入你的项目
 cd your-project
 
 # 3. 运行初始化
-../Stride/ai-workflow-system/ai-workflow.sh init
+../Stride/install.sh
 
 # 4. 创建第一个工作流
 ../Stride/ai-workflow-system/ai-workflow.sh create 功能名称
@@ -133,12 +128,12 @@ cd your-project
 A: 只需分享这个命令给团队成员：
 
 ```bash
-curl -sSL https://github.com/your-or./Stride/ai-workflow-system/raw/main/install.sh | bash
+curl -sSL https://github.com/pagges/Stride/raw/main/install.sh | bash
 ```
 
 或分享这个链接：
 ```
-https://github.com/pagges/ai-workflow-system#快速开始
+https://github.com/pagges/Stride#快速开始
 ```
 
 ---
@@ -189,11 +184,11 @@ A: 使用本地安装方式：
 
 ```bash
 # 1. 手动下载或克隆工作流系统
-git clone https://github.com/pagges/ai-workflow-system.git
+git clone https://github.com/pagges/Stride.git
 
 # 2. 在项目目录初始化
 cd your-project
-../Stride/ai-workflow-system/ai-workflow.sh init
+bash ./Stride/install.sh
 ```
 
 ---
@@ -211,9 +206,9 @@ A: 可以，但注意：
 
 ## 📚 更多信息
 
-- 📖 详细文档：[README-SHELL.md](./Stride/ai-workflow-system/README-SHELL.md)
-- 🔗 GitHub 仓库：https://github.com/pagges/ai-workflow-system
-- 💬 问题反馈：https://github.com/your-or./Stride/ai-workflow-system/issues
+- 📖 详细文档：[README-SHELL.md](./README-SHELL.md)
+- 🔗 GitHub 仓库：https://github.com/pagges/Stride
+- 💬 问题反馈：https://github.com/pagges/Stride/issues
 
 ---
 
