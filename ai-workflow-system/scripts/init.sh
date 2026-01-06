@@ -17,10 +17,10 @@ init_workflow() {
     print_info "AI 工具指令已配置完成"
     echo ""
     print_info "下一步操作："
-    echo "  创建工作流: ~/Documents/ai-work/ai-workflow-system/ai-workflow.sh create <name>"
+    echo "  创建工作流: $SCRIPT_DIR/ai-workflow.sh create <name>"
     echo ""
     print_info "示例："
-    echo "  ~/Documents/ai-work/ai-workflow-system/ai-workflow.sh create 用户认证功能"
+    echo "  $SCRIPT_DIR/ai-workflow.sh create 用户认证功能"
     echo ""
 }
 
@@ -140,7 +140,12 @@ Glob: ai-workflow-*/Workflow.md
 ### 4. 创建新工作流
 执行 shell 命令：
 ```bash
-~/Documents/ai-work/ai-workflow-system/ai-workflow.sh create <工作流名称>
+# 找到 ai-workflow-system 目录的路径，然后运行
+./ai-workflow-system/ai-workflow.sh create <工作流名称>
+```
+或者从 ai-workflow-system 目录运行：
+```bash
+./ai-workflow.sh create <工作流名称>
 ```
 
 ## 重要提示
@@ -253,7 +258,12 @@ Glob: ai-workflow-*/Workflow.md
 ### 4. 创建新工作流
 执行 shell 命令：
 ```bash
-~/Documents/ai-work/ai-workflow-system/ai-workflow.sh create <工作流名称>
+# 找到 ai-workflow-system 目录的路径，然后运行
+./ai-workflow-system/ai-workflow.sh create <工作流名称>
+```
+或者从 ai-workflow-system 目录运行：
+```bash
+./ai-workflow.sh create <工作流名称>
 ```
 
 ## 重要提示
