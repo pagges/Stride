@@ -70,7 +70,7 @@ check_network() {
 
 # 克隆或复制工作流系统
 setup_workflow_system() {
-    local repo_url="${1:-https://github.com/your-org/stride.git}"
+    local repo_url="${1:-https://github.com/pagges/Stride.git}"
 
     print_header "安装 Stride - AI 工作流系统"
 
@@ -180,15 +180,15 @@ AI 开发工作流系统 - 快速安装脚本
 
 示例:
   bash setup-workflow.sh
-  bash setup-workflow.sh --repo https://github.com/your-org/ai-workflow-system.git
+  bash setup-workflow.sh --repo https://github.com/pagges/Stride.git
 
-更多信息: https://github.com/your-org/ai-workflow-system
+更多信息: https://github.com/pagges/Stride
 EOF
 }
 
 # 主函数
 main() {
-    local repo_url="https://github.com/your-org/ai-workflow-system.git"
+    local repo_url="https://github.com/pagges/Stride.git"
 
     parse_arguments "$@"
 
