@@ -71,6 +71,7 @@ check_network() {
 # 克隆或复制工作流系统
 setup_workflow_system() {
     local repo_url="${1:-https://github.com/pagges/Stride.git}"
+    local temp_dir=".stride_temp_$$"
 
     print_header "安装 Stride - AI 工作流系统"
 
@@ -88,12 +89,28 @@ setup_workflow_system() {
 
     print_info "从 $repo_url 克隆工作流系统..."
 
-    if git clone "$repo_url" ai-workflow-system; then
-        print_success "工作流系统已安装"
+    # 使用临时目录克隆，避免嵌套问题
+    if git clone "$repo_url" "$temp_dir"; then
+        print_success "仓库已克隆"
     else
         print_error "克隆失败，请检查仓库地址"
         exit 1
     fi
+
+    # 如果临时目录中有 ai-workflow-system 子目录，则提取该目录
+    if [ -d "$temp_dir/ai-workflow-system" ]; then
+        print_info "提取工作流系统..."
+        mv "$temp_dir/ai-workflow-system" ai-workflow-system
+    else
+        # 否则直接使用克隆的内容作为工作流系统
+        print_info "配置工作流系统..."
+        mv "$temp_dir" ai-workflow-system
+    fi
+
+    # 清理临时目录（以防万一）
+    rm -rf "$temp_dir"
+
+    print_success "工作流系统已安装"
 
     # 添加执行权限
     chmod +x ai-workflow-system/ai-workflow.sh
