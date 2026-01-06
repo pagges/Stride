@@ -58,7 +58,7 @@ download_file() {
 
 # 下载并执行本地设置脚本
 download_setup_script() {
-    local base_url="${1:-https://github.com/your-org/stride/raw/main}"
+    local base_url="${1:-https://github.com/pagges/Stride/raw/main}"
     local setup_url="${base_url}/setup-workflow.sh"
 
     print_info "从 $setup_url 下载设置脚本..."
@@ -76,7 +76,7 @@ download_setup_script() {
 
 # 主函数
 main() {
-    local base_url="${1:-https://github.com/your-org/stride/raw/main}"
+    local base_url="${1:-https://github.com/pagges/Stride/raw/main}"
 
     print_header "🚀 Stride - AI 工作流系统远程安装"
 

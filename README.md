@@ -13,7 +13,7 @@
 在你的项目目录运行一行命令：
 
 ```bash
-curl -sSL https://github.com/your-org/stride/raw/main/install.sh | bash
+curl -sSL https://github.com/pagges/Stride/raw/main/install.sh | bash
 ```
 
 就这样！系统会自动：
@@ -148,7 +148,7 @@ bash setup-workflow.sh
 ### 方式 2：远程一行安装（推荐）
 
 ```bash
-curl -sSL https://github.com/your-org/stride/raw/main/install.sh | bash
+curl -sSL https://github.com/pagges/Stride/raw/main/install.sh | bash
 ```
 
 ### 方式 3：自动配置
@@ -191,31 +191,12 @@ bash configure-install.sh --auto
 ## 🤝 贡献和反馈
 
 ### 问题反馈
-
 遇到问题？请：
-1. 查看 [常见问题](./docs/QUICK_START.md#-常见问题)
-2. 检查相关文档
-3. 提交 [Issue](https://github.com/your-org/stride/issues)
+1. 提交 [Issue](https://github.com/pagges/Stride/issues)
 
 ### 功能建议
-
 有想法？欢迎：
-1. 在 [Discussions](https://github.com/your-org/stride/discussions) 中讨论
-2. 提交 [Pull Request](https://github.com/your-org/stride/pulls)
-3. 发送邮件给维护团队
-
----
-
-## 📊 性能和统计
-
-| 指标 | 数值 |
-|------|------|
-| 安装时间 | < 2 分钟 |
-| 创建工作流 | < 1 分钟 |
-| 脚本总大小 | ~ 55 KB |
-| 支持的 AI 工具 | 3+ |
-| 文档页数 | 5+ |
-
+1. 提交 [Pull Request](https://github.com/pagges/Stride/pulls)
 ---
 
 ## 🔐 安全性
@@ -234,38 +215,22 @@ MIT License - 参见 [LICENSE](./LICENSE) 文件
 
 ---
 
-## 🎓 学习资源
-
-- 📖 [文档中心](./docs/)
-- 🎥 [视频教程](https://example.com/tutorials)
-- 💻 [示例项目](./examples/)
-- 👥 [社区讨论](https://github.com/your-org/stride/discussions)
-
----
 
 ## 🌟 Star History
 
 如果 Stride 对你有帮助，请给我们一个 Star ⭐
 
-[![Star History Chart](https://api.star-history.com/svg?repos=your-org/stride&type=Date)](https://star-history.com/#your-org/stride&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=pagges/Stride&type=Date)](https://star-history.com/#pagges/Stride&Date)
 
 ---
 
-## 📞 联系我们
-
-- 📧 Email: team@example.com
-- 💬 Slack: [Join Community](https://example.com/slack)
-- 🐦 Twitter: [@stride_dev](https://twitter.com/stride_dev)
-- 🌐 Website: [stride.dev](https://stride.dev)
-
----
 
 ## 🎉 快速开始
 
 准备好了？运行一行命令：
 
 ```bash
-curl -sSL https://github.com/your-org/stride/raw/main/install.sh | bash
+curl -sSL https://github.com/pagges/Stride/raw/main/install.sh | bash
 ```
 
 **然后在你的项目中开始使用 Stride！** 🚀
@@ -274,7 +239,7 @@ curl -sSL https://github.com/your-org/stride/raw/main/install.sh | bash
 
 <div align="center">
 
-**[文档](./docs/) · [示例](./examples/) · [讨论](https://github.com/your-org/stride/discussions) · [反馈](https://github.com/your-org/stride/issues)**
+**[文档](./docs/) · [示例](./examples/) · [讨论](https://github.com/pagges/Stride/discussions) · [反馈](https://github.com/pagges/Stride/issues)**
 
 Made with ❤️ for developers everywhere
 
