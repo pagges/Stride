@@ -6,6 +6,7 @@
  * Usage:
  *   npx stride-ai-workflow init [--ai claude|cursor|qoder]
  *   npx stride-ai-workflow create <workflow-name>
+ *   npx stride-ai-workflow uninstall [--force]
  *   npx stride-ai-workflow --help
  *   npx stride-ai-workflow --version
  */
@@ -13,6 +14,7 @@
 const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
+const readline = require('readline');
 
 // 获取包的根目录
 const PKG_ROOT = path.join(__dirname, '..');
@@ -34,6 +36,10 @@ function printSuccess(msg) {
 
 function printError(msg) {
   console.log(`${colors.red}✗${colors.reset} ${msg}`);
+}
+
+function printWarning(msg) {
+  console.log(`${colors.yellow}⚠${colors.reset} ${msg}`);
 }
 
 function printInfo(msg) {
@@ -71,6 +77,30 @@ function validateWorkflowName(name) {
   return { valid: true };
 }
 
+// 询问用户确认
+function askConfirmation(question) {
+  return new Promise((resolve) => {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+
+    rl.question(question, (answer) => {
+      rl.close();
+      resolve(answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes');
+    });
+  });
+}
+
+// 递归删除目录
+function removeDirectory(dirPath) {
+  if (fs.existsSync(dirPath)) {
+    fs.rmSync(dirPath, { recursive: true, force: true });
+    return true;
+  }
+  return false;
+}
+
 // 显示帮助信息
 function showHelp() {
   console.log(`
@@ -79,6 +109,7 @@ ${colors.cyan}Stride${colors.reset} - AI-Assisted Development Workflow System
 ${colors.yellow}用法:${colors.reset}
   npx stride-ai-workflow init [选项]          初始化工作流系统
   npx stride-ai-workflow create <名称>        创建新工作流
+  npx stride-ai-workflow uninstall [选项]     卸载工作流系统
   npx stride-ai-workflow --help               显示帮助信息
   npx stride-ai-workflow --version            显示版本信息
 
@@ -86,10 +117,15 @@ ${colors.yellow}初始化选项:${colors.reset}
   --ai <tool>        指定 AI 工具 (claude|cursor|qoder|auto)
                      默认: auto (自动检测)
 
+${colors.yellow}卸载选项:${colors.reset}
+  --force            跳过确认提示，直接卸载
+  --keep-workflows   保留已创建的工作流数据
+
 ${colors.yellow}示例:${colors.reset}
   npx stride-ai-workflow init                 # 自动检测 AI 工具
   npx stride-ai-workflow init --ai claude     # 指定使用 Claude
   npx stride-ai-workflow create user-auth     # 创建用户认证工作流
+  npx stride-ai-workflow uninstall            # 卸载 Stride
 
 ${colors.yellow}更多信息:${colors.reset}
   文档: https://github.com/pagges/Stride
@@ -204,6 +240,122 @@ async function createCommand(workflowName) {
   }
 }
 
+// 卸载命令
+async function uninstallCommand(options) {
+  printHeader('Stride 工作流系统卸载');
+
+  const cwd = process.cwd();
+  const strideDir = path.join(cwd, '.stride');
+
+  // 检查是否已安装
+  if (!fs.existsSync(strideDir)) {
+    printWarning('当前目录未安装 Stride 工作流系统');
+    return;
+  }
+
+  // AI 工具命令目录列表
+  const aiToolDirs = [
+    { name: 'Claude Code', path: '.claude/commands' },
+    { name: 'Cursor', path: '.cursor/commands' },
+    { name: 'Qoder', path: '.qoder/commands' },
+    { name: 'Windsurf', path: '.windsurf/commands' },
+    { name: 'Trae', path: '.trae/commands' }
+  ];
+
+  // 查找已安装的 AI 工具命令
+  const installedToolDirs = aiToolDirs.filter(tool =>
+    fs.existsSync(path.join(cwd, tool.path))
+  );
+
+  // 查找已创建的工作流
+  const workflows = [];
+  if (fs.existsSync(strideDir)) {
+    const entries = fs.readdirSync(strideDir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (entry.isDirectory() && entry.name.startsWith('stride-')) {
+        workflows.push(entry.name);
+      }
+    }
+  }
+
+  // 显示将要删除的内容
+  console.log('将要删除以下内容：\n');
+
+  printInfo('.stride/template/ (工作流系统模板)');
+
+  if (!options['keep-workflows'] && workflows.length > 0) {
+    for (const wf of workflows) {
+      printWarning(`.stride/${wf}/ (工作流数据)`);
+    }
+  }
+
+  for (const tool of installedToolDirs) {
+    printInfo(`${tool.path}/ (${tool.name} 命令)`);
+  }
+
+  console.log('');
+
+  // 确认删除
+  if (!options.force) {
+    const confirmed = await askConfirmation('确定要卸载 Stride 吗？此操作不可恢复 [y/N]: ');
+    if (!confirmed) {
+      printInfo('已取消卸载');
+      return;
+    }
+  }
+
+  console.log('');
+
+  // 执行删除
+  let hasError = false;
+
+  // 删除 AI 工具命令目录
+  for (const tool of installedToolDirs) {
+    const toolPath = path.join(cwd, tool.path);
+    try {
+      if (removeDirectory(toolPath)) {
+        printSuccess(`已删除 ${tool.path}/`);
+      }
+    } catch (err) {
+      printError(`删除 ${tool.path}/ 失败: ${err.message}`);
+      hasError = true;
+    }
+  }
+
+  // 删除 .stride 目录
+  if (options['keep-workflows'] && workflows.length > 0) {
+    // 只删除 template 目录，保留工作流
+    const templateDir = path.join(strideDir, 'template');
+    try {
+      if (removeDirectory(templateDir)) {
+        printSuccess('已删除 .stride/template/');
+      }
+    } catch (err) {
+      printError(`删除 .stride/template/ 失败: ${err.message}`);
+      hasError = true;
+    }
+    printInfo(`已保留 ${workflows.length} 个工作流目录`);
+  } else {
+    // 删除整个 .stride 目录
+    try {
+      if (removeDirectory(strideDir)) {
+        printSuccess('已删除 .stride/');
+      }
+    } catch (err) {
+      printError(`删除 .stride/ 失败: ${err.message}`);
+      hasError = true;
+    }
+  }
+
+  console.log('');
+
+  if (hasError) {
+    printWarning('卸载完成，但部分文件删除失败');
+  } else {
+    printSuccess('Stride 工作流系统已成功卸载');
+  }
+}
+
 // 解析命令行参数
 function parseArgs(args) {
   const options = {};
@@ -262,6 +414,10 @@ async function main() {
 
     case 'create':
       await createCommand(positional[1]);
+      break;
+
+    case 'uninstall':
+      await uninstallCommand(options);
       break;
 
     default:

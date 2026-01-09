@@ -1,6 +1,6 @@
 {
   "name": "stride-ai-workflow",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "AI-Assisted Development Workflow System - 一行命令启动智能开发工作流",
   "main": "bin/stride.js",
   "bin": {
