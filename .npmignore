@@ -28,6 +28,9 @@ tests/
 .stride_temp_*
 node_modules/
 
+# 工作流目录（保留模板）
+.stride/stride-*
+
 # 其他
 .DS_Store
 Thumbs.db

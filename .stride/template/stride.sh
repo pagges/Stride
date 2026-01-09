@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Stride - AI 开发工作流系统 - 主启动脚本
-# 版本: 0.1.1
+# 版本: 0.2.0
 
 set -eo pipefail
 
