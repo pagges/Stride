@@ -1,9 +1,15 @@
 ---
-total_tasks: 0
-completed_tasks: 0
-in_progress_tasks: 0
-micro_tasks_total: 0
-micro_tasks_completed: 0
+type: task
+status: pending      # pending | in_progress | completed
+created_at: ""
+updated_at: ""
+version: 1.0
+stats:
+  total_tasks: 0
+  completed_tasks: 0
+  in_progress_tasks: 0
+  micro_tasks_total: 0
+  micro_tasks_completed: 0
 ---
 
 # 任务清单

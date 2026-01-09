@@ -33,13 +33,12 @@
   },
   "homepage": "https://github.com/pagges/Stride#readme",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   },
   "files": [
     "bin/",
-    "install.sh",
+    "lib/",
     "setup-workflow.sh",
-    "configure-install.sh",
     ".stride/",
     "README.md",
     "LICENSE"

@@ -1,7 +1,13 @@
 ---
-total_cases: 0
-passed_cases: 0
-failed_cases: 0
+type: testcase
+status: pending      # pending | in_progress | completed
+created_at: ""
+updated_at: ""
+version: 1.0
+stats:
+  total_cases: 0
+  passed_cases: 0
+  failed_cases: 0
 ---
 
 # 测试用例

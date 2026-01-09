@@ -1,7 +1,10 @@
 ---
-status: "pending"
+type: design
+status: pending      # pending | in_progress | completed
 reviewed: false
-last_updated: ""
+created_at: ""
+updated_at: ""
+version: 1.0
 ---
 
 # 设计文档

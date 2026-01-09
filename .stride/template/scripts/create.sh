@@ -10,6 +10,29 @@ TEMPLATES_DIR="$SCRIPT_DIR/../templates"
 CYAN='\033[0;36m'
 NC='\033[0m'
 
+# 验证工作流名称（防止路径穿越和特殊字符注入）
+validate_workflow_name() {
+    local name="$1"
+
+    if [ -z "$name" ]; then
+        return 1
+    fi
+
+    # 检查长度
+    if [ ${#name} -gt 100 ]; then
+        print_error "工作流名称过长（最多 100 个字符）"
+        return 1
+    fi
+
+    # 检查路径穿越
+    if [[ "$name" == *".."* ]] || [[ "$name" == *"/"* ]]; then
+        print_error "工作流名称不能包含 '..' 或 '/'"
+        return 1
+    fi
+
+    return 0
+}
+
 # 创建工作流
 create_workflow() {
     local workflow_name="$1"
@@ -24,6 +47,11 @@ create_workflow() {
         echo "示例:"
         echo "  ./stride.sh create user-auth"
         echo "  ./stride.sh create 用户认证"
+        exit 1
+    fi
+
+    # 验证名称安全性
+    if ! validate_workflow_name "$workflow_name"; then
         exit 1
     fi
 

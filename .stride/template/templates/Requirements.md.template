@@ -1,7 +1,10 @@
 ---
-status: "pending"
+type: requirements
+status: pending      # pending | in_progress | completed
 reviewed: false
-last_updated: ""
+created_at: ""
+updated_at: ""
+version: 1.0
 ---
 
 # 需求文档

@@ -2,12 +2,12 @@
 
 /**
  * Stride CLI - AI-Assisted Development Workflow System
- * 
+ *
  * Usage:
- *   npx @pagges/stride init [--ai claude|cursor|qoder]
- *   npx @pagges/stride create <workflow-name>
- *   npx @pagges/stride --help
- *   npx @pagges/stride --version
+ *   npx stride-ai-workflow init [--ai claude|cursor|qoder]
+ *   npx stride-ai-workflow create <workflow-name>
+ *   npx stride-ai-workflow --help
+ *   npx stride-ai-workflow --version
  */
 
 const { spawn } = require('child_process');
@@ -46,25 +46,50 @@ function printHeader(msg) {
   console.log(`${colors.cyan}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${colors.reset}\n`);
 }
 
+// 验证工作流名称（防止路径穿越和特殊字符注入）
+function validateWorkflowName(name) {
+  if (!name || typeof name !== 'string') {
+    return { valid: false, error: '请指定工作流名称' };
+  }
+
+  // 检查长度
+  if (name.length > 100) {
+    return { valid: false, error: '工作流名称过长（最多 100 个字符）' };
+  }
+
+  // 检查路径穿越
+  if (name.includes('..') || name.includes('/') || name.includes('\\')) {
+    return { valid: false, error: '工作流名称不能包含 ".."、"/" 或 "\\"' };
+  }
+
+  // 检查危险的 shell 字符
+  const dangerousChars = /[;&|`$(){}[\]<>!#*?'"]/;
+  if (dangerousChars.test(name)) {
+    return { valid: false, error: '工作流名称包含不允许的特殊字符' };
+  }
+
+  return { valid: true };
+}
+
 // 显示帮助信息
 function showHelp() {
   console.log(`
 ${colors.cyan}Stride${colors.reset} - AI-Assisted Development Workflow System
 
 ${colors.yellow}用法:${colors.reset}
-  npx @pagges/stride init [选项]          初始化工作流系统
-  npx @pagges/stride create <名称>        创建新工作流
-  npx @pagges/stride --help               显示帮助信息
-  npx @pagges/stride --version            显示版本信息
+  npx stride-ai-workflow init [选项]          初始化工作流系统
+  npx stride-ai-workflow create <名称>        创建新工作流
+  npx stride-ai-workflow --help               显示帮助信息
+  npx stride-ai-workflow --version            显示版本信息
 
 ${colors.yellow}初始化选项:${colors.reset}
   --ai <tool>        指定 AI 工具 (claude|cursor|qoder|auto)
                      默认: auto (自动检测)
 
 ${colors.yellow}示例:${colors.reset}
-  npx @pagges/stride init                 # 自动检测 AI 工具
-  npx @pagges/stride init --ai claude     # 指定使用 Claude
-  npx @pagges/stride create user-auth     # 创建用户认证工作流
+  npx stride-ai-workflow init                 # 自动检测 AI 工具
+  npx stride-ai-workflow init --ai claude     # 指定使用 Claude
+  npx stride-ai-workflow create user-auth     # 创建用户认证工作流
 
 ${colors.yellow}更多信息:${colors.reset}
   文档: https://github.com/pagges/Stride
@@ -90,9 +115,11 @@ function runShellScript(scriptPath, args = []) {
 
     // 确保脚本有执行权限
     try {
-      fs.chmodSync(scriptPath, '755');
+      fs.chmodSync(scriptPath, 0o755);
     } catch (err) {
       printError(`无法设置执行权限: ${err.message}`);
+      reject(new Error(`Cannot set executable permission: ${err.message}`));
+      return;
     }
 
     const child = spawn('bash', [scriptPath, ...args], {
@@ -122,14 +149,21 @@ function runShellScript(scriptPath, args = []) {
 // 初始化命令
 async function initCommand(options) {
   printHeader('Stride 工作流系统初始化');
-  
+
   const setupScript = path.join(PKG_ROOT, 'setup-workflow.sh');
   const args = [];
-  
+
   if (options.ai) {
+    // 验证 AI 工具名称
+    const validTools = ['claude', 'cursor', 'qoder', 'windsurf', 'trae', 'auto'];
+    if (!validTools.includes(options.ai.toLowerCase())) {
+      printError(`无效的 AI 工具: ${options.ai}`);
+      printInfo(`有效选项: ${validTools.join(', ')}`);
+      process.exit(1);
+    }
     args.push('--ai', options.ai);
   }
-  
+
   try {
     await runShellScript(setupScript, args);
     printSuccess('初始化完成！');
@@ -141,24 +175,26 @@ async function initCommand(options) {
 
 // 创建工作流命令
 async function createCommand(workflowName) {
-  if (!workflowName) {
-    printError('请指定工作流名称');
-    console.log('用法: npx @pagges/stride create <工作流名称>');
+  // 验证工作流名称
+  const validation = validateWorkflowName(workflowName);
+  if (!validation.valid) {
+    printError(validation.error);
+    console.log('用法: npx stride-ai-workflow create <工作流名称>');
     process.exit(1);
   }
 
   printHeader(`创建工作流: ${workflowName}`);
-  
+
   // 检查是否已初始化
   const strideTemplate = path.join(process.cwd(), '.stride', 'template');
   if (!fs.existsSync(strideTemplate)) {
     printError('工作流系统未初始化');
-    printInfo('请先运行: npx @pagges/stride init');
+    printInfo('请先运行: npx stride-ai-workflow init');
     process.exit(1);
   }
 
   const strideScript = path.join(strideTemplate, 'stride.sh');
-  
+
   try {
     await runShellScript(strideScript, ['create', workflowName]);
     printSuccess(`工作流 "${workflowName}" 创建成功！`);
@@ -172,14 +208,14 @@ async function createCommand(workflowName) {
 function parseArgs(args) {
   const options = {};
   const positional = [];
-  
+
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
-    
+
     if (arg.startsWith('--')) {
       const key = arg.slice(2);
       const value = args[i + 1];
-      
+
       if (value && !value.startsWith('--')) {
         options[key] = value;
         i++; // 跳过下一个参数
@@ -190,53 +226,57 @@ function parseArgs(args) {
       positional.push(arg);
     }
   }
-  
+
   return { options, positional };
 }
 
 // 主函数
 async function main() {
   const args = process.argv.slice(2);
-  
+
   // 没有参数时显示帮助
   if (args.length === 0) {
     showHelp();
     return;
   }
-  
+
   const { options, positional } = parseArgs(args);
   const command = positional[0];
-  
+
   // 处理全局选项
   if (options.help || command === 'help') {
     showHelp();
     return;
   }
-  
+
   if (options.version || command === 'version') {
     showVersion();
     return;
   }
-  
+
   // 处理命令
   switch (command) {
     case 'init':
       await initCommand(options);
       break;
-      
+
     case 'create':
       await createCommand(positional[1]);
       break;
-      
+
     default:
       printError(`未知命令: ${command}`);
-      console.log('运行 "npx @pagges/stride --help" 查看可用命令');
+      console.log('运行 "npx stride-ai-workflow --help" 查看可用命令');
       process.exit(1);
   }
 }
 
 // 运行主函数
 main().catch((err) => {
-  printError(`发生错误: ${err.message}`);
+  const message = err?.message || String(err) || '未知错误';
+  printError(`发生错误: ${message}`);
+  if (process.env.DEBUG) {
+    console.error(err);
+  }
   process.exit(1);
 });

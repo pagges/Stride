@@ -80,24 +80,24 @@ select_ai_tools_manually() {
     fi
 
     for choice in "${choices[@]}"; do
-        case "$choice" in
-            [1-9])
-                local idx=$((choice - 1))
-                if [ $idx -lt ${#KNOWN_TOOLS[@]} ]; then
-                    local tool_info="${KNOWN_TOOLS[$idx]}"
-                    local name="${tool_info%%:*}"
-                    local rest="${tool_info#*:}"
-                    local cmd_dir="${rest%%:*}"
-                    setup_tool "$name" "$cmd_dir"
-                fi
-                ;;
-            [Cc])
-                setup_custom_tool
-                ;;
-            *)
-                print_warning "忽略无效选项: $choice"
-                ;;
-        esac
+        # 验证输入是数字或 C/c
+        if [[ "$choice" =~ ^[0-9]+$ ]]; then
+            local idx=$((choice - 1))
+            # 验证索引在有效范围内
+            if [ "$idx" -ge 0 ] && [ "$idx" -lt ${#KNOWN_TOOLS[@]} ]; then
+                local tool_info="${KNOWN_TOOLS[$idx]}"
+                local name="${tool_info%%:*}"
+                local rest="${tool_info#*:}"
+                local cmd_dir="${rest%%:*}"
+                setup_tool "$name" "$cmd_dir"
+            else
+                print_warning "忽略无效选项: $choice (有效范围: 1-${#KNOWN_TOOLS[@]})"
+            fi
+        elif [[ "$choice" =~ ^[Cc]$ ]]; then
+            setup_custom_tool
+        else
+            print_warning "忽略无效选项: $choice (请输入数字 1-${#KNOWN_TOOLS[@]} 或 C)"
+        fi
     done
 }
 

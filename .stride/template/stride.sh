@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Stride - AI 开发工作流系统 - 主启动脚本
-# 版本: 1.0.0
+# 版本: 0.1.1
 
-set -e
+set -eo pipefail
 
 # 检查是否使用 sudo 运行（不推荐）
 if [ "$EUID" -eq 0 ] || [ -n "$SUDO_USER" ]; then

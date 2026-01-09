@@ -1,7 +1,13 @@
 ---
-total_bugs: 0
-open_bugs: 0
-closed_bugs: 0
+type: buglist
+status: pending      # pending | in_progress | completed
+created_at: ""
+updated_at: ""
+version: 1.0
+stats:
+  total_bugs: 0
+  open_bugs: 0
+  closed_bugs: 0
 ---
 
 # Bug 追踪

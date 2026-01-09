@@ -1,41 +1,44 @@
 #!/bin/bash
 
 # Stride - AI 开发工作流系统 - 快速安装脚本
-# 用法: bash setup-workflow.sh [--repo <repo-url>]
+# 用法: bash setup-workflow.sh [--ai <tool>]
 
-set -e
+set -eo pipefail
 
-# 颜色定义
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+# 获取脚本所在目录
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# 打印函数
-print_success() {
-    echo -e "${GREEN}✓${NC} $1"
+# 加载共享函数库
+if [ -f "$SCRIPT_DIR/lib/common.sh" ]; then
+    source "$SCRIPT_DIR/lib/common.sh"
+else
+    # 内联定义（用于 npx 安装场景）
+    RED='\033[0;31m'
+    GREEN='\033[0;32m'
+    YELLOW='\033[1;33m'
+    BLUE='\033[0;34m'
+    CYAN='\033[0;36m'
+    NC='\033[0m'
+    print_success() { echo -e "${GREEN}✓${NC} $1"; }
+    print_error() { echo -e "${RED}✗${NC} $1"; }
+    print_warning() { echo -e "${YELLOW}⚠${NC} $1"; }
+    print_info() { echo -e "${BLUE}ℹ${NC} $1"; }
+    print_header() {
+        echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${CYAN}$1${NC}"
+        echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo ""
+    }
+fi
+
+# 临时目录清理
+TEMP_DIR=""
+cleanup() {
+    if [ -n "$TEMP_DIR" ] && [ -d "$TEMP_DIR" ]; then
+        rm -rf "$TEMP_DIR"
+    fi
 }
-
-print_error() {
-    echo -e "${RED}✗${NC} $1"
-}
-
-print_warning() {
-    echo -e "${YELLOW}⚠${NC} $1"
-}
-
-print_info() {
-    echo -e "${BLUE}ℹ${NC} $1"
-}
-
-print_header() {
-    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo -e "${CYAN}$1${NC}"
-    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo ""
-}
+trap cleanup EXIT
 
 # 检查依赖
 check_dependencies() {
@@ -71,7 +74,6 @@ check_network() {
 # 克隆或复制工作流系统
 setup_workflow_system() {
     local repo_url="${1:-https://github.com/pagges/Stride.git}"
-    local temp_dir=".stride_temp_$$"
 
     print_header "安装 Stride - AI 工作流系统"
 
@@ -84,13 +86,18 @@ setup_workflow_system() {
             print_info "跳过安装"
             return 0
         fi
-        rm -rf .stride/template
+        # 安全删除：验证路径
+        if [ -d ".stride" ] && [ -d ".stride/template" ]; then
+            rm -rf .stride/template
+        fi
     fi
 
     print_info "从 $repo_url 克隆工作流系统..."
 
-    # 使用临时目录克隆，避免嵌套问题
-    if git clone "$repo_url" "$temp_dir"; then
+    # 使用唯一临时目录
+    TEMP_DIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'stride')
+
+    if git clone "$repo_url" "$TEMP_DIR"; then
         print_success "仓库已克隆"
     else
         print_error "克隆失败，请检查仓库地址"
@@ -98,31 +105,26 @@ setup_workflow_system() {
     fi
 
     # 检测并提取工作流系统
-    # 优先级：.stride/template > ai-workflow-system > 整个仓库
-    if [ -d "$temp_dir/.stride/template" ]; then
+    mkdir -p .stride
+
+    if [ -d "$TEMP_DIR/.stride/template" ]; then
         # 本地打包的结构
         print_info "提取工作流系统（本地打包结构）..."
-        mkdir -p .stride
-        mv "$temp_dir/.stride/template" .stride/template
-    elif [ -d "$temp_dir/ai-workflow-system" ]; then
+        mv "$TEMP_DIR/.stride/template" .stride/template
+    elif [ -d "$TEMP_DIR/ai-workflow-system" ]; then
         # GitHub 仓库结构
         print_info "提取工作流系统（GitHub 仓库结构）..."
-        mkdir -p .stride
-        mv "$temp_dir/ai-workflow-system" .stride/template
+        mv "$TEMP_DIR/ai-workflow-system" .stride/template
     else
         # 整个仓库作为模板
         print_info "配置工作流系统（使用整个仓库）..."
-        mkdir -p .stride
-        mv "$temp_dir" .stride/template
+        mv "$TEMP_DIR" .stride/template
+        TEMP_DIR=""  # 已移动，不需要清理
     fi
-
-    # 清理临时目录（以防万一）
-    rm -rf "$temp_dir"
 
     print_success "工作流系统已安装"
 
     # 添加执行权限
-    # 检测脚本位置
     if [ -f ".stride/template/stride.sh" ]; then
         chmod +x .stride/template/stride.sh
         chmod +x .stride/template/scripts/*.sh 2>/dev/null || true
@@ -134,7 +136,7 @@ setup_workflow_system() {
 
 # 初始化工作流系统
 initialize_workflow() {
-    local ai_tool="${1:-claude}"
+    local ai_tool="${1:-auto}"
 
     print_header "初始化工作流系统"
 
@@ -220,12 +222,12 @@ Stride - AI 开发工作流系统 - 快速安装脚本
   bash setup-workflow.sh [选项]
 
 选项:
-  --repo <url>      指定仓库地址（默认：GitHub）
-  --help,-h         显示此帮助信息
+  --ai <tool>     指定 AI 工具 (claude|cursor|qoder|auto)
+  --help,-h       显示此帮助信息
 
 示例:
   bash setup-workflow.sh
-  bash setup-workflow.sh --repo https://github.com/pagges/Stride.git
+  bash setup-workflow.sh --ai claude
 
 更多信息: https://github.com/pagges/Stride
 EOF
@@ -234,7 +236,7 @@ EOF
 # 主函数
 main() {
     local repo_url="https://github.com/pagges/Stride.git"
-    local ai_tool="auto"  # 让用户选择 AI 工具
+    local ai_tool="auto"
 
     parse_arguments "$@"
 
