@@ -34,6 +34,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 # 打印带颜色的消息
@@ -56,17 +57,25 @@ print_info() {
 # 显示帮助信息
 show_help() {
     cat << EOF
-Stride - AI 开发工作流系统初始化工具 v1.0.0
+Stride - AI 开发工作流系统 v1.0.0
 
-用法: ./ai-workflow.sh [init|help]
+用法: ./stride.sh <命令> [参数]
 
 命令:
-  init   初始化工作流系统到当前项目（默认）
-  help   显示此帮助信息
+  init              初始化工作流系统到当前项目
+  create <名称>     创建新的工作流
+  list              列出所有工作流
+  status            显示当前工作流状态
+  help              显示此帮助信息
 
 示例:
-  ./ai-workflow.sh init       # 初始化到项目
-  ./ai-workflow.sh            # 默认运行 init
+  ./stride.sh init                  # 初始化系统
+  ./stride.sh create user-auth      # 创建工作流
+  ./stride.sh create 用户认证       # 中文名称也支持
+  ./stride.sh list                  # 列出所有工作流
+  ./stride.sh status                # 查看状态
+
+工作流存储位置: .stride/stride-<名称>/
 
 更多信息请访问: https://github.com/pagges/Stride
 EOF
@@ -77,15 +86,31 @@ source "$SCRIPT_DIR/scripts/utils.sh"
 
 # 主命令分发
 main() {
-    local command="${1:-init}"
+    local command="${1:-}"
     shift || true  # 移除第一个参数，以便传递剩余的参数
 
     case "$command" in
-        init|"")
+        init)
             source "$SCRIPT_DIR/scripts/init.sh"
-            init_workflow "$@"  # 传递剩余的参数
+            init_workflow "$@"
+            ;;
+        create)
+            source "$SCRIPT_DIR/scripts/create.sh"
+            create_workflow "$@"
+            ;;
+        list|ls)
+            source "$SCRIPT_DIR/scripts/list.sh"
+            list_workflows "$@"
+            ;;
+        status|st)
+            source "$SCRIPT_DIR/scripts/status.sh"
+            show_status "$@"
             ;;
         help|--help|-h)
+            show_help
+            ;;
+        "")
+            # 无参数时显示帮助
             show_help
             ;;
         *)

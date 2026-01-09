@@ -76,15 +76,15 @@ setup_workflow_system() {
     print_header "安装 Stride - AI 工作流系统"
 
     # 检查是否已存在
-    if [ -d "ai-workflow-system" ]; then
-        print_warning "ai-workflow-system 目录已存在"
+    if [ -d ".stride/template" ]; then
+        print_warning ".stride/template 目录已存在"
         read -p "是否覆盖? [y/N] " -n 1 -r
         echo
         if [[ ! $REPLY =~ ^[Yy]$ ]]; then
             print_info "跳过安装"
             return 0
         fi
-        rm -rf ai-workflow-system
+        rm -rf .stride/template
     fi
 
     print_info "从 $repo_url 克隆工作流系统..."
@@ -97,14 +97,23 @@ setup_workflow_system() {
         exit 1
     fi
 
-    # 如果临时目录中有 ai-workflow-system 子目录，则提取该目录
-    if [ -d "$temp_dir/ai-workflow-system" ]; then
-        print_info "提取工作流系统..."
-        mv "$temp_dir/ai-workflow-system" ai-workflow-system
+    # 检测并提取工作流系统
+    # 优先级：.stride/template > ai-workflow-system > 整个仓库
+    if [ -d "$temp_dir/.stride/template" ]; then
+        # 本地打包的结构
+        print_info "提取工作流系统（本地打包结构）..."
+        mkdir -p .stride
+        mv "$temp_dir/.stride/template" .stride/template
+    elif [ -d "$temp_dir/ai-workflow-system" ]; then
+        # GitHub 仓库结构
+        print_info "提取工作流系统（GitHub 仓库结构）..."
+        mkdir -p .stride
+        mv "$temp_dir/ai-workflow-system" .stride/template
     else
-        # 否则直接使用克隆的内容作为工作流系统
-        print_info "配置工作流系统..."
-        mv "$temp_dir" ai-workflow-system
+        # 整个仓库作为模板
+        print_info "配置工作流系统（使用整个仓库）..."
+        mkdir -p .stride
+        mv "$temp_dir" .stride/template
     fi
 
     # 清理临时目录（以防万一）
@@ -113,8 +122,14 @@ setup_workflow_system() {
     print_success "工作流系统已安装"
 
     # 添加执行权限
-    chmod +x ai-workflow-system/ai-workflow.sh
-    chmod +x ai-workflow-system/scripts/*.sh 2>/dev/null || true
+    # 检测脚本位置
+    if [ -f ".stride/template/stride.sh" ]; then
+        chmod +x .stride/template/stride.sh
+        chmod +x .stride/template/scripts/*.sh 2>/dev/null || true
+    elif [ -f ".stride/template/ai-workflow.sh" ]; then
+        chmod +x .stride/template/ai-workflow.sh
+        chmod +x .stride/template/scripts/*.sh 2>/dev/null || true
+    fi
 }
 
 # 初始化工作流系统
@@ -123,47 +138,51 @@ initialize_workflow() {
 
     print_header "初始化工作流系统"
 
-    if [ ! -f "ai-workflow-system/ai-workflow.sh" ]; then
-        print_error "ai-workflow-system/ai-workflow.sh 不存在"
+    # 检测脚本位置
+    local workflow_script=""
+    if [ -f ".stride/template/stride.sh" ]; then
+        workflow_script="./.stride/template/stride.sh"
+    elif [ -f ".stride/template/ai-workflow.sh" ]; then
+        workflow_script="./.stride/template/ai-workflow.sh"
+    else
+        print_error "工作流脚本不存在"
+        print_info "请检查 .stride/template/ 目录"
         exit 1
     fi
 
     print_info "运行初始化命令..."
     echo ""
 
-    ./ai-workflow-system/ai-workflow.sh init "$ai_tool"
+    "$workflow_script" init "$ai_tool"
 }
 
 # 显示成功信息
 show_success_message() {
-    print_header "✨ 安装完成！"
+    print_header "安装完成！"
 
     echo -e "${GREEN}Stride - AI 开发工作流系统已成功安装！${NC}"
     echo ""
 
-    print_info "现在你可以：${NC}"
+    print_info "现在你可以："
     echo ""
-    echo "  🎯 推荐：在 Claude Code 中使用"
-    echo "     ${CYAN}/workflow${NC}              # 创建或管理工作流"
+    echo "  在 AI Coding 工具中使用"
+    echo -e "     ${CYAN}/workflow${NC}              # 创建或管理工作流"
     echo ""
-    echo "  📝 或使用 Shell 命令："
-    echo "     ${CYAN}./ai-workflow-system/ai-workflow.sh create <工作流名称>${NC}"
-    echo ""
-    echo "  📚 查看所有可用命令："
-    echo "     ${CYAN}./ai-workflow-system/ai-workflow.sh help${NC}"
+    echo "  或使用 Shell 命令"
+    echo -e "     ${CYAN}./.stride/template/stride.sh create <名称>${NC}"
     echo ""
 
     print_info "可用指令："
-    echo "  ${CYAN}/workflow${NC}              - 创建或进入工作流"
-    echo "  ${CYAN}/dev TASK-001${NC}          - 开发任务"
-    echo "  ${CYAN}/doc-review${NC}            - 文档审查"
-    echo "  ${CYAN}/code-review${NC}           - 代码审查"
-    echo "  ${CYAN}/bug${NC}                   - 提交问题"
-    echo "  ${CYAN}/fix BUG-001${NC}           - 修复问题"
-    echo "  ${CYAN}/test${NC}                  - 执行测试"
+    echo -e "  ${CYAN}/workflow${NC}              - 创建或进入工作流"
+    echo -e "  ${CYAN}/dev TASK-001${NC}          - 开发任务"
+    echo -e "  ${CYAN}/doc-review${NC}            - 文档审查"
+    echo -e "  ${CYAN}/code-review${NC}           - 代码审查"
+    echo -e "  ${CYAN}/bug${NC}                   - 提交问题"
+    echo -e "  ${CYAN}/fix BUG-001${NC}           - 修复问题"
+    echo -e "  ${CYAN}/test${NC}                  - 执行测试"
     echo ""
 
-    print_success "一切准备就绪！开始创建第一个工作流吧 🚀"
+    print_info "工作流存储位置: .stride/stride-<名称>/"
     echo ""
 }
 
@@ -195,7 +214,7 @@ parse_arguments() {
 # 显示帮助信息
 show_help() {
     cat << EOF
-AI 开发工作流系统 - 快速安装脚本
+Stride - AI 开发工作流系统 - 快速安装脚本
 
 用法:
   bash setup-workflow.sh [选项]
@@ -215,7 +234,7 @@ EOF
 # 主函数
 main() {
     local repo_url="https://github.com/pagges/Stride.git"
-    local ai_tool="claude"  # 默认 AI 工具
+    local ai_tool="auto"  # 让用户选择 AI 工具
 
     parse_arguments "$@"
 
@@ -223,7 +242,7 @@ main() {
     repo_url="${REPO_URL:-$repo_url}"
     ai_tool="${AI_TOOL:-$ai_tool}"
 
-    print_header "🚀 AI 工作流系统安装程序"
+    print_header "Stride 工作流系统安装程序"
 
     check_dependencies
     echo ""

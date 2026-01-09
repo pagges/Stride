@@ -1,0 +1,53 @@
+{
+  "name": "stride-ai-workflow",
+  "version": "0.1.0",
+  "description": "AI-Assisted Development Workflow System - 一行命令启动智能开发工作流",
+  "main": "bin/stride.js",
+  "bin": {
+    "stride": "bin/stride.js"
+  },
+  "scripts": {
+    "test": "bash -c 'shellcheck *.sh || true'",
+    "prepublishOnly": "echo 'Publishing @pagges/stride...'",
+    "postinstall": "node bin/postinstall.js"
+  },
+  "keywords": [
+    "ai",
+    "workflow",
+    "development",
+    "claude",
+    "cursor",
+    "qoder",
+    "automation",
+    "productivity",
+    "cli"
+  ],
+  "author": "pagges",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pagges/Stride.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pagges/Stride/issues"
+  },
+  "homepage": "https://github.com/pagges/Stride#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "bin/",
+    "install.sh",
+    "setup-workflow.sh",
+    "configure-install.sh",
+    ".stride/",
+    "README.md",
+    "LICENSE"
+  ],
+  "preferGlobal": false,
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ]
+}

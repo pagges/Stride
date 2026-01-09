@@ -1,0 +1,33 @@
+# 开发文件
+.git/
+.github/
+.gitignore
+.gitignore-workflow
+
+# IDE 配置
+.vscode/
+.idea/
+.cursor/
+.claude/
+.windsurf/
+
+# 文档（保留 README.md）
+docs/
+examples/
+*.md
+!README.md
+
+# 测试文件
+test/
+tests/
+*.test.js
+*.spec.js
+
+# 临时文件
+*.tmp
+.stride_temp_*
+node_modules/
+
+# 其他
+.DS_Store
+Thumbs.db

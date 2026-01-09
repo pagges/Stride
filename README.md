@@ -10,7 +10,16 @@
 
 ## 🚀 快速开始
 
-在你的项目目录运行一行命令：
+### 方式 1：使用 NPM/NPX（推荐）
+
+在你的项目目录运行：
+
+```bash
+cd /path/to/your/project
+npx stride-ai-workflow init
+```
+
+### 方式 2：使用 curl
 
 ```bash
 cd /path/to/your/project
@@ -18,10 +27,10 @@ curl -sSL https://github.com/pagges/Stride/raw/main/install.sh | bash
 ```
 
 就这样！系统会自动：
-- ✅ 下载初始化脚本
 - ✅ 检测你的 AI 工具（Claude Code / Qoder / Cursor）
 - ✅ 配置工作流命令定义
 - ✅ 准备好文档模板和执行规范
+- ✅ 创建必要的目录结构
 
 ---
 
@@ -145,14 +154,30 @@ your-project/
 
 ## 🛠️ 安装方式
 
-### 方式 1：远程一行安装（推荐）
+### 方式 1：NPM/NPX 安装（推荐）
+
+```bash
+# 使用 npx（无需安装，推荐）
+cd /path/to/your/project
+npx stride-ai-workflow init
+
+# 或全局安装
+npm install -g stride-ai-workflow
+stride init
+
+# 或作为项目开发依赖
+npm install --save-dev stride-ai-workflow
+npx stride init
+```
+
+### 方式 2：远程 curl 安装
 
 ```bash
 cd /path/to/your/project
 curl -sSL https://github.com/pagges/Stride/raw/main/install.sh | bash
 ```
 
-### 方式 2：本地安装
+### 方式 3：本地安装
 
 ```bash
 cd /path/to/your/project
@@ -160,6 +185,17 @@ bash Stride/setup-workflow.sh
 ```
 
 初始化完成后会提示选择你使用的 AI 工具（Claude Code / Qoder / Cursor）
+
+### 指定 AI 工具
+
+```bash
+# NPM 方式
+npx stride-ai-workflow init --ai claude
+npx stride-ai-workflow init --ai cursor
+npx stride-ai-workflow init --ai qoder
+
+# curl 方式会自动检测
+```
 
 ---
 

@@ -1,21 +1,22 @@
 #!/bin/bash
 
-# AI 开发工作流系统 - 工具函数
+# Stride - AI 开发工作流系统 - 工具函数
 # 此文件包含共享的工具函数
 
-# 注意：颜色定义和基础打印函数已在 ai-workflow.sh 中定义
+# 注意：颜色定义和基础打印函数已在 stride.sh 中定义
 # 此文件用于存放额外的共享工具函数
 
-# 检查是否在工作流目录中
+# 检查是否在工作流目录中（.stride/stride-xxx）
 is_in_workflow_dir() {
     local dir_name=$(basename "$(pwd)")
-    [[ "$dir_name" == ai-workflow-* ]]
+    local parent_dir=$(basename "$(dirname "$(pwd)")")
+    [[ "$dir_name" == stride-* ]] && [[ "$parent_dir" == ".stride" ]]
 }
 
 # 获取工作流名称（从目录名提取）
 get_workflow_name() {
     local dir_name=$(basename "$(pwd)")
-    echo "${dir_name#ai-workflow-}"
+    echo "${dir_name#stride-}"
 }
 
 # 查找项目根目录（包含 .git 或 CLAUDE.md 的目录）
@@ -30,4 +31,10 @@ find_project_root() {
     done
     # 如果找不到，返回当前目录
     pwd
+}
+
+# 查找 .stride 目录
+find_stride_dir() {
+    local project_root=$(find_project_root)
+    echo "$project_root/.stride"
 }

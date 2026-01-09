@@ -4,9 +4,9 @@
 # 用于通过 curl 或 wget 远程执行
 #
 # 使用方式:
-# curl -sSL https://your-raw-github-url/install.sh | bash
+# curl -sSL https://github.com/pagges/Stride/raw/main/install.sh | bash
 # 或
-# wget -qO- https://your-raw-github-url/install.sh | bash
+# wget -qO- https://github.com/pagges/Stride/raw/main/install.sh | bash
 
 set -e
 
@@ -79,11 +79,11 @@ download_setup_script() {
 main() {
     local base_url="${1:-https://github.com/pagges/Stride/raw/main}"
 
-    print_header "🚀 Stride - AI 工作流系统远程安装"
+    print_header "Stride - AI 工作流系统远程安装"
 
     # 确保在项目目录
     if [ ! -d ".git" ] && [ ! -f "package.json" ] && [ ! -f "README.md" ]; then
-        print_warning "未检测到项目根目录"
+        print_warning "未检测到项目根目录,请使用 git init 初始化项目之后再运行"
         read -p "是否继续在当前目录安装? [y/N] " -n 1 -r
         echo
         if [[ ! $REPLY =~ ^[Yy]$ ]]; then
@@ -95,7 +95,7 @@ main() {
     check_dependencies
     echo ""
 
-    download_setup_script "$base_url" "claude"
+    download_setup_script "$base_url" "auto"
 }
 
 main "$@"

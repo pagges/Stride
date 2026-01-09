@@ -1,0 +1,316 @@
+---
+# 工作流元数据
+name: 小程序完善
+description: 工作流描述
+version: 1.0
+created_at: 2026-01-09
+updated_at: 2026-01-09
+
+# 工作流状态
+status: planning  # planning | requirements | design | implementation | testing | completed
+
+# 阶段进度
+stages:
+  requirements:
+    status: not_started  # not_started | in_progress | completed
+    started_at: null
+    completed_at: null
+    reviewer: null
+    notes: ""
+
+  design:
+    status: not_started
+    started_at: null
+    completed_at: null
+    reviewer: null
+    notes: ""
+
+  implementation:
+    status: not_started
+    started_at: null
+    completed_at: null
+    progress: "0/0 tasks"
+    notes: ""
+
+  testing:
+    status: not_started
+    started_at: null
+    completed_at: null
+    coverage: 0%
+    notes: ""
+
+  deployment:
+    status: not_started
+    started_at: null
+    completed_at: null
+    environment: null
+    notes: ""
+
+# Git 统计
+git_stats:
+  total_commits: 0
+  current_branch: main
+  last_commit: null
+  last_commit_message: null
+
+# 任务统计
+task_stats:
+  total_tasks: 0
+  completed_tasks: 0
+  in_progress_tasks: 0
+  micro_tasks_total: 0
+  micro_tasks_completed: 0
+
+# Bug 统计
+bug_stats:
+  total_bugs: 0
+  open_bugs: 0
+  fixed_bugs: 0
+
+---
+
+# 工作流：小程序完善
+
+## 📋 工作流概述
+
+**描述**:
+待填写
+
+**目标**:
+- [ ] 完成需求分析
+- [ ] 完成系统设计
+- [ ] 完成代码实现
+- [ ] 完成测试验收
+- [ ] 准备上线部署
+
+---
+
+## 📊 当前进度
+
+### 阶段进度汇总
+
+| 阶段 | 状态 | 进度 | 预计完成 |
+|------|------|------|---------|
+| 📝 需求分析 | ○ 未开始 | - | - |
+| 🎨 系统设计 | ○ 未开始 | - | - |
+| 💻 代码实现 | ○ 未开始 | 0/0 | - |
+| 🧪 测试验收 | ○ 未开始 | - | - |
+| 🚀 上线部署 | ○ 未开始 | - | - |
+
+### 任务统计
+
+- **总任务数**: 0
+- **已完成**: 0
+- **进行中**: 0
+- **待开始**: 0
+- **微任务**: 0/0
+
+### Bug 统计
+
+- **总 Bug 数**: 0
+- **未修复**: 0
+- **已修复**: 0
+
+---
+
+## 🎯 执行流程
+
+### 第一阶段：需求分析
+
+**步骤**:
+1. 编写 `Requirements.md` - 清晰定义需求
+2. 执行 `/doc-review Requirements.md` - 需求审查
+3. 确认需求无误后，更新此文档状态为 ✓
+
+**检查清单**:
+- [ ] 需求文档已编写
+- [ ] 需求已审查
+- [ ] 需求确认无误
+
+**执行命令**:
+```bash
+/doc-review Requirements.md
+```
+
+---
+
+### 第二阶段：系统设计
+
+**步骤**:
+1. 编写 `Design.md` - 设计系统架构和实现方案
+2. 执行 `/doc-review Design.md` - 设计审查
+3. 确认设计无误后，更新此文档状态为 ✓
+
+**检查清单**:
+- [ ] 设计文档已编写
+- [ ] 设计已审查
+- [ ] 设计确认无误
+
+**执行命令**:
+```bash
+/doc-review Design.md
+```
+
+---
+
+### 第三阶段：任务规划
+
+**步骤**:
+1. 在 `Task.md` 中拆分任务为微任务
+2. 定义每个微任务的实现细节和验收标准
+3. 确认任务规划无误
+
+**检查清单**:
+- [ ] 主任务已分解为微任务
+- [ ] 每个微任务都有清晰的描述和验收标准
+- [ ] 任务依赖关系已定义
+- [ ] 预计工时已评估
+
+---
+
+### 第四阶段：代码实现
+
+**步骤**:
+1. 执行 `/dev TASK-001 --plan-only` - 制定实现计划
+2. 审查计划确认无误
+3. 执行 `/dev TASK-001 --execute` - 实现任务
+4. 执行 `/code-review` - 代码审查
+5. 根据审查结果调整代码
+6. 更新 `Task.md` 中的任务状态
+
+**关键信息**:
+- 每个微任务应该可以独立实现
+- 每个微任务完成后应自动生成一个 Git 提交
+- 代码审查应在实现前进行规划审查
+
+**执行命令**:
+```bash
+# 1. 制定计划
+/dev TASK-001 --plan-only
+
+# 2. 执行实现
+/dev TASK-001 --execute
+
+# 3. 代码审查
+/code-review
+```
+
+---
+
+### 第五阶段：测试验收
+
+**步骤**:
+1. 执行 `/test` - 运行所有测试
+2. 分析测试结果
+3. 如有失败，记录为 Bug 使用 `/bug` 记录
+4. 使用 `/fix BUG-XXX` 修复 Bug
+5. 重新运行测试确认修复
+
+**检查清单**:
+- [ ] 所有单元测试通过
+- [ ] 所有集成测试通过
+- [ ] 代码覆盖率达标 (>80%)
+- [ ] 性能测试通过
+- [ ] 没有未修复的 Bug
+
+**执行命令**:
+```bash
+# 运行测试
+/test
+
+# 记录 Bug
+/bug "测试名称 - 问题描述"
+
+# 修复 Bug
+/fix BUG-001
+```
+
+---
+
+### 第六阶段：上线部署
+
+**步骤**:
+1. 完成所有测试
+2. 生成 Release Notes
+3. 准备部署
+4. 执行部署
+
+**检查清单**:
+- [ ] 所有测试通过
+- [ ] 代码已审查
+- [ ] Release Notes 已准备
+- [ ] 部署计划已确认
+
+---
+
+## 📝 关键文档
+
+| 文档 | 状态 | 最后更新 | 备注 |
+|------|------|--------|------|
+| Requirements.md | ○ | - | 需求文档 |
+| Design.md | ○ | - | 设计文档 |
+| Task.md | ○ | - | 任务清单 |
+| BugList.md | ○ | - | Bug 列表 |
+| TestCase.md | ○ | - | 测试用例 |
+
+---
+
+## 📅 时间线
+
+| 日期 | 事件 | 备注 |
+|------|------|------|
+| 2026-01-09 | 工作流创建 | - |
+
+---
+
+## 💡 重要提示
+
+### Plan/Execute 分离
+
+使用 `/dev TASK-001 --plan-only` 先制定计划：
+- AI 分解任务为微任务
+- 定义修改的文件清单
+- 预估每个微任务的实现细节
+- **不直接修改代码**
+
+用户审查计划后，再执行 `/dev TASK-001 --execute` 进行实际实现。
+
+### Context Engineering
+
+每个命令执行前，AI 会自动收集上下文：
+- Requirements.md（需求背景）
+- Design.md（设计方案）
+- Task.md（任务定义）
+- 相关代码文件（代码上下文）
+
+这使 AI 能够在完整的上下文中工作，减少错误。
+
+### 微任务分解
+
+大任务应该分解为小的、可独立实现的微任务：
+- 每个微任务 1-2 小时完成
+- 微任务之间清晰的依赖关系
+- 每个微任务独立提交和审查
+
+---
+
+## 🔗 相关命令
+
+| 命令 | 用途 |
+|------|------|
+| `/workflow` | 查看工作流状态 |
+| `/doc-review` | 审查文档 |
+| `/dev TASK-XXX --plan-only` | 制定任务实现计划 |
+| `/dev TASK-XXX --execute` | 执行任务实现 |
+| `/code-review` | 代码审查 |
+| `/bug "描述"` | 记录 Bug |
+| `/fix BUG-XXX` | 修复 Bug |
+| `/test` | 执行测试 |
+
+---
+
+## 📞 需要帮助？
+
+- 查看 `ai-workflow/INSTRUCTIONS.md` 了解详细规范
+- 查看 `ai-workflow/commands/` 下的命令文档
+- 查看 `ai-workflow/templates/` 下的文档模板
