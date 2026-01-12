@@ -1,0 +1,32 @@
+# NPM 相关
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+*.tgz
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 临时文件
+*.tmp
+.stride_temp_*
+
+# 测试和构建
+coverage/
+dist/
+build/
+
+# 环境变量
+.env
+.env.local
