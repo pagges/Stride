@@ -286,15 +286,6 @@ npx stride-ai-workflow uninstall --keep-workflows
 MIT License - 参见 [LICENSE](./LICENSE)
 
 ---
-
-## ⭐ Star History
-
-如果 Stride 对你有帮助，请给我们一个 Star！
-
-[![Star History Chart](https://api.star-history.com/svg?repos=pagges/Stride&type=Date)](https://star-history.com/#pagges/Stride&Date)
-
----
-
 <div align="center">
 
 **[npm](https://www.npmjs.com/package/stride-ai-workflow) · [文档](./docs/) · [讨论](https://github.com/pagges/Stride/discussions) · [反馈](https://github.com/pagges/Stride/issues)**
