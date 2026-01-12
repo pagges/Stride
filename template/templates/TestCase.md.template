@@ -1,0 +1,74 @@
+---
+type: testcase
+status: pending      # pending | in_progress | completed
+created_at: ""
+updated_at: ""
+version: 1.0
+stats:
+  total_cases: 0
+  passed_cases: 0
+  failed_cases: 0
+---
+
+# 测试用例
+
+## 测试概览
+
+### 测试策略
+
+<!-- 描述测试策略 -->
+
+### 测试范围
+
+<!-- 描述测试范围 -->
+
+---
+
+## 单元测试
+
+<!-- 单元测试用例 -->
+
+---
+
+## 集成测试
+
+<!-- 集成测试用例 -->
+
+---
+
+## 端到端测试
+
+<!-- E2E 测试用例 -->
+
+---
+
+## 测试用例详情
+
+<!--
+测试用例模板:
+
+### TC-001: 测试用例标题
+
+**类型**: unit | integration | e2e
+**优先级**: high | medium | low
+**状态**: pending | passed | failed
+
+**前置条件**:
+- 条件1
+- 条件2
+
+**测试步骤**:
+1. 步骤1
+2. 步骤2
+
+**预期结果**:
+期望的结果
+
+**实际结果**:
+<!-- 执行后填写 -->
+
+**相关需求**: REQ-XXX
+**相关任务**: TASK-XXX
+
+---
+-->
