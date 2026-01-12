@@ -92,37 +92,52 @@ setup_workflow_system() {
         fi
     fi
 
-    print_info "从 $repo_url 克隆工作流系统..."
-
-    # 使用唯一临时目录
-    TEMP_DIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'stride')
-
-    if git clone "$repo_url" "$TEMP_DIR"; then
-        print_success "仓库已克隆"
+    # 检查是否从 npm 包运行（通过 STRIDE_PKG_ROOT 环境变量）
+    if [ -n "$STRIDE_PKG_ROOT" ] && [ -d "$STRIDE_PKG_ROOT/template" ]; then
+        print_info "从 npm 包安装工作流系统..."
+        
+        mkdir -p .stride
+        cp -r "$STRIDE_PKG_ROOT/template" .stride/template
+        
+        print_success "工作流系统已安装"
     else
-        print_error "克隆失败，请检查仓库地址"
-        exit 1
+        # 从 GitHub 克隆
+        print_info "从 $repo_url 克隆工作流系统..."
+
+        # 使用唯一临时目录
+        TEMP_DIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'stride')
+
+        if git clone "$repo_url" "$TEMP_DIR"; then
+            print_success "仓库已克隆"
+        else
+            print_error "克隆失败，请检查仓库地址"
+            exit 1
+        fi
+
+        # 检测并提取工作流系统
+        mkdir -p .stride
+
+        if [ -d "$TEMP_DIR/.stride/template" ]; then
+            # 本地打包的结构
+            print_info "提取工作流系统（本地打包结构）..."
+            mv "$TEMP_DIR/.stride/template" .stride/template
+        elif [ -d "$TEMP_DIR/template" ]; then
+            # npm 包结构
+            print_info "提取工作流系统（npm 包结构）..."
+            mv "$TEMP_DIR/template" .stride/template
+        elif [ -d "$TEMP_DIR/ai-workflow-system" ]; then
+            # GitHub 仓库结构
+            print_info "提取工作流系统（GitHub 仓库结构）..."
+            mv "$TEMP_DIR/ai-workflow-system" .stride/template
+        else
+            # 整个仓库作为模板
+            print_info "配置工作流系统（使用整个仓库）..."
+            mv "$TEMP_DIR" .stride/template
+            TEMP_DIR=""  # 已移动，不需要清理
+        fi
+
+        print_success "工作流系统已安装"
     fi
-
-    # 检测并提取工作流系统
-    mkdir -p .stride
-
-    if [ -d "$TEMP_DIR/.stride/template" ]; then
-        # 本地打包的结构
-        print_info "提取工作流系统（本地打包结构）..."
-        mv "$TEMP_DIR/.stride/template" .stride/template
-    elif [ -d "$TEMP_DIR/ai-workflow-system" ]; then
-        # GitHub 仓库结构
-        print_info "提取工作流系统（GitHub 仓库结构）..."
-        mv "$TEMP_DIR/ai-workflow-system" .stride/template
-    else
-        # 整个仓库作为模板
-        print_info "配置工作流系统（使用整个仓库）..."
-        mv "$TEMP_DIR" .stride/template
-        TEMP_DIR=""  # 已移动，不需要清理
-    fi
-
-    print_success "工作流系统已安装"
 
     # 添加执行权限
     if [ -f ".stride/template/stride.sh" ]; then

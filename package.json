@@ -1,6 +1,6 @@
 {
   "name": "stride-ai-workflow",
-  "version": "0.2.2",
+  "version": "0.2.5",
   "description": "打破 AI 编程工具与团队协作的边界 - 通过统一项目状态，解决工具间的协作断层，让 AI 与人类开发者真正站在同一条起跑线上。支持 Claude Code、Cursor、Qoder、Windsurf、Trae 等 AI 工具的跨工具协作。",
   "main": "bin/stride.js",
   "bin": {
@@ -39,7 +39,7 @@
     "bin/",
     "lib/",
     "setup-workflow.sh",
-    ".stride/template/",
+    "template/",
     "README.md",
     "LICENSE"
   ],
